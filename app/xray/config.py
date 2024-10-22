@@ -362,7 +362,7 @@ class XRayConfig(dict):
                 db_models.User.username,
                 func.lower(db_models.Proxy.type).label('type'),
                 db_models.Proxy.settings,
-                func.group_concat(db_models.excluded_inbounds_association.c.inbound_tag).label('excluded_inbound_tags')
+                func.string_agg(db_models.excluded_inbounds_association.c.inbound_tag, ',').label('excluded_inbound_tags')
             ).join(
                 db_models.Proxy, db_models.User.id == db_models.Proxy.user_id
             ).outerjoin(
